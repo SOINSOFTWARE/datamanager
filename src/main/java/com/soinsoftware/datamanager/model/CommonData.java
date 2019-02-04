@@ -1,11 +1,10 @@
-// Soin Software, 2018
+/** Soin Software, 2018 */
 package com.soinsoftware.datamanager.model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,52 +14,45 @@ import javax.persistence.TemporalType;
 
 /**
  * @author Carlos Rodriguez
- * @since 27/11/2018
+ * @since 13/08/2018
  */
 @MappedSuperclass
 public abstract class CommonData implements Serializable {
 
-	private static final long serialVersionUID = 5530514093455467768L;
+	private static final long serialVersionUID = -6961800919721222709L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
+
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creation_date", insertable = false)
-	private Date creationDate;
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "modify_date", insertable = false)
-	private Date modifyDate;
-	private boolean archived;
+	private Date creation;
+
+	private boolean enabled = true;
 
 	public CommonData() {
 		super();
 	}
 
-	public CommonData(final BigInteger id, final Date creationDate, final Date modifyDate, final boolean archived) {
+	public CommonData(BigInteger id, Date creation, boolean enabled) {
 		super();
 		this.id = id;
-		this.creationDate = creationDate;
-		this.modifyDate = modifyDate;
-		this.archived = archived;
+		this.creation = creation;
+		this.enabled = enabled;
 	}
 
 	public BigInteger getId() {
 		return id;
 	}
 
-	public Date getCreationDate() {
-		return creationDate;
+	public Date getCreation() {
+		return creation;
 	}
 
-	public Date getModifyDate() {
-		return modifyDate;
+	public boolean isEnabled() {
+		return enabled;
 	}
-
-	public boolean isArchived() {
-		return archived;
-	}
-
+	
 	public boolean isNew() {
 		return (id == null);
 	}
@@ -94,6 +86,8 @@ public abstract class CommonData implements Serializable {
 		}
 		return true;
 	}
-
+	
 	public abstract void validate();
+	
+	public abstract String getTitle();
 }
